@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Commercial space for lease, 100 Futa Road, Bareilly</title>
-<meta name="description" content="Basement + 4 floors on a 300+ gaj plot with main-road frontage on 100 Futa Road (100 Feet Road), Tula Sherpur, Bareilly. Lease one floor or several, directly from the owner.">
+<meta name="description" content="Basement + 3 floors on a 275 gaj plot with main-road frontage on 100 Futa Road (100 Feet Road), Tula Sherpur, Bareilly. Lease one floor or several, directly from the owner.">
 <meta name="theme-color" content="#2B2A27">
 
 <!-- SINGLE-FILE VERSION: photos are embedded. For publishing, the folder version (zip) loads faster.
@@ -12,7 +12,7 @@
      After publishing, change img/og.jpg to the full address, e.g. https://yourdomain.in/img/og.jpg -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Commercial space for lease, 100 Futa Road, Bareilly">
-<meta property="og:description" content="Basement + 4 floors with main-road frontage. Lease one floor or several, directly from the owner.">
+<meta property="og:description" content="Basement + 3 floors with main-road frontage. Lease one floor or several, directly from the owner.">
 <meta property="og:image" content="img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -35,15 +35,10 @@ window.SITE = {
   // Floors, top to bottom. Put the measured carpet area (a number, sq ft) in
   // "carpet" when you have it; until then the page shows "Being measured".
   floors: [
-    { id: "second",   name: "Second floor", carpet: 2250, condition: "Bare shell",
-      suits: "Offices, clinic, training, showroom display" },
-    { id: "first",    name: "First floor",  carpet: 2250, condition: "Bare shell",
-      suits: "Showroom, clinic or diagnostics, bank, offices" },
-    { id: "ground",   name: "Ground floor", carpet: 2250, condition: "Bare shell",
-      suits: "Bank branch, showroom, clinic",
-      note: "Direct main-road frontage. Frontage width is being measured." },
-    { id: "basement", name: "Basement",     carpet: null, condition: "Bare shell",
-      suits: "Use as allowed by the sanctioned plan", basement: true }
+    { id: "second",   name: "Second floor", carpet: 2250, condition: "Bare shell" },
+    { id: "first",    name: "First floor",  carpet: 2250, condition: "Bare shell" },
+    { id: "ground",   name: "Ground floor", carpet: 2250, condition: "Bare shell" },
+    { id: "basement", name: "Basement",     carpet: 2250, condition: "Bare shell", basement: true }
   ],
 
   // [label, value, confirmed?]  false = shown with a dashed outline.
@@ -252,6 +247,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
 .foot p{max-width:44rem;margin:0 0 .8rem}
 .foot .btn{margin-top:.4rem;color:var(--cladding)}
 #shareStatus{margin-left:.6rem}
+.qr{margin-top:1.5rem;display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
+.qr-img{width:148px;height:148px;padding:.6rem;background:#fff;border-radius:var(--r-s);display:grid;place-items:center}
+.qr-img svg{width:100%;height:100%;display:block}
+.qr-cap{margin:0;font-size:.85rem;color:var(--on-dark-2)}
 
 /* phone quick-contact bar */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);background:var(--stone);border-top:3px solid var(--teak);padding-bottom:env(safe-area-inset-bottom)}
@@ -273,7 +272,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
         <span class="h1-sub">Commercial floors for lease in Bareilly</span>
       </h1>
       <p class="hindi" lang="hi">100 फुटा रोड, बरेली में व्यावसायिक जगह किराये पर उपलब्ध</p>
-      <p class="lede">Basement + 4 floors on a 300+ gaj plot in Tula Sherpur, with direct main-road frontage opposite Domino's. Lease one floor or several, directly from the owner.</p>
+      <p class="lede">Basement + 3 floors on a 275 gaj plot in Tula Sherpur, with direct main-road frontage opposite Domino's. Lease one floor or several, directly from the owner.</p>
       <div class="actions">
         <a class="btn btn-light js-call" href="#">Call the owner</a>
         <a class="btn btn-wa js-wa" href="#">WhatsApp</a>
@@ -347,8 +346,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
         </div>
       </div>
       <div class="map" id="map">
-        <button type="button" class="btn btn-line" id="loadMap">Show the map here</button>
-        <p>The map loads only when you tap, to keep this page fast.</p>
+        <a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=28.3871964,79.4478595" target="_blank" rel="noopener">Open in Google Maps</a>
+        <p>JavaScript is off — tap the button to open the map.</p>
       </div>
     </div>
   </section>
@@ -419,6 +418,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
     <p>Areas, specifications and condition are indicative until measured and confirmed in writing. Photos show the building as it is now. This page is not an offer or a contract.</p>
     <p>Last updated <span id="updated"></span>.</p>
     <button type="button" class="btn btn-line" id="shareBtn">Share this page</button><span id="shareStatus" role="status"></span>
+    <div class="qr" id="qrBox" hidden>
+      <div class="qr-img" id="qrImg" aria-hidden="true"></div>
+      <p class="qr-cap">Scan to open this page on your phone.</p>
+    </div>
   </div>
 </footer>
 
@@ -438,6 +441,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
   </figure>
 </dialog>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 <script>
 (function () {
   "use strict";
@@ -505,7 +509,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
     var d = $("#floorDetail");
     d.replaceChildren(el("h2", { "class": "fd-title", text: f.name }));
     var dl = el("dl", { "class": "fd-list" });
-    [["Carpet area", areaText(f), !!f.carpet], ["Condition", f.condition, true], ["Suits", f.suits, true]].forEach(function (r) {
+    [["Carpet area", areaText(f), !!f.carpet], ["Condition", f.condition, true]].forEach(function (r) {
       dl.append(el("div", {}, el("dt", { text: r[0] }), el("dd", { "class": r[2] ? "" : "pending", text: r[1] })));
     });
     d.append(dl);
@@ -555,7 +559,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
   /* map */
   var q = S.mapLat + "," + S.mapLng;
   $("#mapsLink").href = "https://www.google.com/maps/search/?api=1&query=" + q;
-  $("#loadMap").addEventListener("click", function () {
+  (function () {
     var m = $("#map");
     m.replaceChildren(el("iframe", {
       title: "Map showing 100 Futa Road, Bareilly",
@@ -563,7 +567,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
       loading: "lazy", referrerpolicy: "no-referrer-when-downgrade"
     }));
     m.classList.add("loaded");
-  });
+  })();
 
   /* enquiry form */
   var checks = $("#floorChecks");
@@ -649,6 +653,19 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
       status.textContent = "Copy the link from your browser's address bar.";
     }
   });
+
+  /* QR code for the current page URL */
+  (function () {
+    var box = $("#qrBox"), img = $("#qrImg");
+    if (!box || !img || typeof qrcode === "undefined") return;
+    try {
+      var qr = qrcode(0, "M");
+      qr.addData(location.href);
+      qr.make();
+      img.innerHTML = qr.createImgTag(4, 0);
+      box.hidden = false;
+    } catch (e) { }
+  })();
 })();
 </script>
 </body>
