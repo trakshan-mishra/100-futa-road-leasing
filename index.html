@@ -633,6 +633,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!report(problems())) return;
+    trackEnquiry(compose());
     window.open(waBase + "?text=" + encodeURIComponent(compose()), "_blank", "noopener");
   });
   if (S.email) {
@@ -641,6 +642,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
     mailBtn.addEventListener("click", function () {
       var p = problems().filter(function (m) { return m.indexOf("owner's number") === -1; });
       if (!report(p)) return;
+      trackEnquiry(compose());
       location.href = "mailto:" + S.email + "?subject=" + encodeURIComponent("Enquiry: 100 Futa Road, Bareilly") + "&body=" + encodeURIComponent(compose());
     });
   }
@@ -659,6 +661,34 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
       status.textContent = "Copy the link from your browser's address bar.";
     }
   });
+
+  /* visitor & enquiry tracking */
+  var TRACKER = "https://100-futa-tracker.trakshanmishra477.workers.dev";
+  function trackView() {
+    try {
+      fetch(TRACKER + "/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: location.pathname, referrer: document.referrer })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function trackEnquiry(msg) {
+    try {
+      var fd = new FormData(form);
+      fetch(TRACKER + "/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fd.get("name"), phone: fd.get("phone"), org: fd.get("org"),
+          use: fd.get("use"), floors: fd.getAll("floors").join(", "),
+          area: fd.get("area"), move: fd.get("move"), visit: fd.get("visit"),
+          notes: fd.get("notes")
+        })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  trackView();
 
   /* QR code for the current page URL */
   (function () {
